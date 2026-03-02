@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { MqttModule } from './mqtt/mqtt.module';
 import { WsModule } from './ws/ws.module';
 
 @Module({
@@ -12,12 +13,13 @@ import { WsModule } from './ws/ws.module';
     MongooseModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (cfg: ConfigService) => ({
-        uri: cfg.get<string>('MONGO_URI', process.env.MONGO_URI as string),
+        uri: cfg.get<string>('MONGO_URI', ''),
       }),
     }),
+    MqttModule,
     UsersModule,
     AuthModule,
-    WsModule,
+    WsModule
   ],
 })
 export class AppModule {}
